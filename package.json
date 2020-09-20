@@ -4,8 +4,8 @@
 	"description": "A script that will scrape the retrocdn site for magazines",
 	"main": "index.js",
 	"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cli": "node src/index.js"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"cli": "node src/index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -19,6 +19,7 @@
 	"homepage": "https://github.com/metric152/scrape-retrocdn#readme",
 	"dependencies": {
 		"axios": "^0.20.0",
+		"cli-progress": "^3.8.2",
 		"commander": "^6.1.0",
 		"jsdom": "^16.4.0"
 	}

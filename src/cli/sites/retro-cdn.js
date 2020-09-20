@@ -1,3 +1,4 @@
+const cliProgress = require('cli-progress');
 const axios = require('axios').default;
 const jsdom = require("jsdom");
 const url = require('url');
@@ -21,17 +22,27 @@ function getMagazinePages(data) {
     const { document } = (new JSDOM(data)).window;
     let urls = [];
     let urlGenerator;
+    
+    // create a new progress bar instance and use shades_classic theme
+    const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
     function getNextMag(item) {
         if (item.done) {
+            bar1.stop();
             return;
         }
+
+        bar1.increment({fileName: item.value});
 
         // Get the individual magazine page
         axios.get(item.value).then(magPageResponse => {
             getMagazineLink(magPageResponse.data).then(data => {
                 // Log the saved magazine
-                console.log(data);
+                // console.log(data);
+
+                // Add one to the bar
+                bar1.increment();
+
                 // Get the next magazine
                 getNextMag(urlGenerator.next());
             }).catch(error => {
@@ -45,6 +56,9 @@ function getMagazinePages(data) {
         // Create full urls for the pages
         urls.push(`${domain}${link.href}`);
     });
+
+    // Update the progress bar
+    bar1.start(urls.length, 0);
 
     // Save the array to an iterator
     urlGenerator = urls[Symbol.iterator]();
