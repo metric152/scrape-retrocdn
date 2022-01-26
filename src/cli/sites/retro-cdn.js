@@ -8,13 +8,17 @@ const { JSDOM } = jsdom;
 // Get the base URL from the domain
 let urlObj;
 let domain;
+let cliProgramObj;
 
-module.exports = (urlStr) => {
-    urlObj = new URL(urlStr);
+module.exports = (programObj) => {
+    // Capture the object so we can read it later
+    cliProgramObj = programObj;
+
+    urlObj = new URL(programObj.url);
     domain = `${urlObj.protocol}//${urlObj.hostname}`;
 
     // Fetch the page
-    axios.get(urlStr).then(response => getMagazinePages(response.data));
+    axios.get(programObj.url).then(response => getMagazinePages(response.data));
 };
 
 function getMagazinePages(data) {
