@@ -36,8 +36,6 @@ function getMagazinePages(data) {
             return;
         }
 
-        bar1.increment({fileName: item.value});
-
         // Get the individual magazine page
         axios.get(item.value).then(magPageResponse => {
             getMagazineLink(magPageResponse.data).then(data => {
@@ -87,7 +85,9 @@ function getMagazineLink (data) {
             method: 'get',
             url: url,
             responseType: 'stream'
-        }).then(response => saveMagazine(response).then((msg) => resolve(msg)))
+        })
+        .then(response => saveMagazine(response))
+        .then((msg) => resolve(msg))
         .catch(error => {
             console.log('an error happened', error);
             reject(error);
