@@ -32,5 +32,30 @@ module.exports = (programObj) => {
 };
 
 function getMagazines(data) {
-    console.log(`data:`, JSON.stringify(data, null, 4));
+    // Assign the response to a dom object
+    const { document } = (new JSDOM(data)).window;
+
+    let urls = [];
+    let urlGenerator;
+    
+    // Create a new progress bar instance and use shades_classic theme
+    const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+    // Get all the links we're looking for
+    document.querySelectorAll("a[href$='cbr']").forEach(link => {
+        // Check to see if the link contains the text we want
+        if (!cliProgramObj.text) {
+            urls.push(`${domain}${link.href}`);
+        } else if (cliProgramObj.text && link.text.toLowerCase().includes(cliProgramObj.text)) {
+            urls.push(`${domain}${link.href}`);
+        }
+    });
+
+    // Update the progress bar
+    bar1.start(urls.length, 0);
+
+    // Save the array to an iterator
+    urlGenerator = urls[Symbol.iterator]();
+
+    console.log(`urls:`, urls);
 }
