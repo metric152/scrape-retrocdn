@@ -55,7 +55,7 @@ function getMagazines(domain, folder, text, data, axiosOptions) {
     }
 
     // Get all the links we're looking for
-    document.querySelectorAll("a[href$='cbr']").forEach(link => {
+    document.querySelectorAll("a[href$='cbr'], a[href$='cbz']").forEach(link => {
         // Check to see if the link contains the text we want
         if (!text) {
             urls.push(`${domain}${link.href}`);
